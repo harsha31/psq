@@ -122,13 +122,10 @@ class Queue(object):
         ack_ids = [x[0] for x in messages]
 
         tasks = []
-        for x in messages:
-            try:
-                task = unpickle(x[1].data)
-                tasks.append(task)
-            except UnpickleError:
-                logger.exception('Failed to unpickle task {}.'.format(x[0]))
-
+        
+        for ack_id, message in messages:
+            
+            tasks.append(message.data)
         self.subscription.acknowledge(ack_ids)
 
         return tasks

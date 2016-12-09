@@ -18,6 +18,7 @@ import logging
 import multiprocessing
 import signal
 import time
+import json
 
 from retrying import retry
 
@@ -25,10 +26,19 @@ from .utils import measure_time
 
 
 logger = logging.getLogger(__name__)
+from google.cloud import logging as logging_new
 
+logging_client = logging_new.Client()
+
+def logMessage(message):
+    log_name = "my-log"
+    logger_new = logging_client.logger(log_name)
+    #for message in messages
+    data = json.loads(message)
+    logger_new.log_struct(data['data'],labels={"custom.googleapis.com/primary_key":data['primary_key'],"custom.googleapis.com/secondary_key":data['secondary_key']},severity='CRITICAL')
 
 class Worker(object):
-    def __init__(self, queue):
+    def __init__(self, queue='default'):
         self.queue = queue
         self.storage = self.queue.storage
         self.tasks_per_poll = 1
@@ -51,13 +61,18 @@ class Worker(object):
             while True:
 
                 tasks = self._safe_dequeue()
+                #print "harshhhhhhhhhhhhhhhhhhhhhhaaaaaaaaaaaaaaaaa"
+                #logger.info('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbb')
 
                 if not tasks:
                     continue
 
                 for task in tasks:
-                    logger.info('Received task {}'.format(task.id))
-                    self.run_task(task)
+                    logMessage(task)
+                    #print task
+                    #print "execute task here" 
+                    #logger.info('Received task {}'.format(task.id))
+                    #self.run_task(task)
 
         except KeyboardInterrupt:
             logger.info('Stopped listening for tasks.')
