@@ -33,9 +33,12 @@ logging_client = logging_new.Client()
 def logMessage(message):
     try:
         log_name = "my-log"
-        logger_new = logging_client.logger(log_name)
+        logger_new = logging_client.logger("harsha")
+        logger_new.log_text("hello world")
+        logger_new.log_struct({"barca":"messi"})
     #for message in messages
         data = json.loads(message)
+        logger_new.log_text("after json dump")
         logger_new.log_struct(data['data'],labels={"custom.googleapis.com/primary_key":data['primary_key'],"custom.googleapis.com/secondary_key":data['secondary_key']},severity='CRITICAL')
     except:
         logger.info("exception in logMeassage")
