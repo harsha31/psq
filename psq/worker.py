@@ -56,8 +56,9 @@ class Worker(object):
         return inner()
 
     def listen(self):
-        logger.info('Listening, press Ctrl+C to exit.')
+        logger.info('I am hereeeeeeeeeeeeeeeeeeeeeeeeeeee.')
         try:
+            logger.info('In while loooooooppppppp')
             while True:
                 print('listeeeeeeeeeeeeeninnnnnnnnnnnnng')
 
@@ -89,6 +90,7 @@ class Worker(object):
 
 class MultiprocessWorker(Worker):
     def __init__(self, queue, num_workers=None, *args, **kwargs):
+        logger.info('in multi processsssinggggggggggg')
         super(MultiprocessWorker, self).__init__(queue, *args, **kwargs)
 
         if not num_workers:
