@@ -59,6 +59,7 @@ class Worker(object):
         logger.info('Listening, press Ctrl+C to exit.')
         try:
             while True:
+                print('listeeeeeeeeeeeeeninnnnnnnnnnnnng')
 
                 tasks = self._safe_dequeue()
                 #print "harshhhhhhhhhhhhhhhhhhhhhhaaaaaaaaaaaaaaaaa"
@@ -68,6 +69,7 @@ class Worker(object):
                     continue
 
                 for task in tasks:
+                    print(task)
                     logMessage(task)
                     #print task
                     #print "execute task here" 
