@@ -31,11 +31,14 @@ from google.cloud import logging as logging_new
 logging_client = logging_new.Client()
 
 def logMessage(message):
-    log_name = "my-log"
-    logger_new = logging_client.logger(log_name)
+    try:
+        log_name = "my-log"
+        logger_new = logging_client.logger(log_name)
     #for message in messages
-    data = json.loads(message)
-    logger_new.log_struct(data['data'],labels={"custom.googleapis.com/primary_key":data['primary_key'],"custom.googleapis.com/secondary_key":data['secondary_key']},severity='CRITICAL')
+        data = json.loads(message)
+        logger_new.log_struct(data['data'],labels={"custom.googleapis.com/primary_key":data['primary_key'],"custom.googleapis.com/secondary_key":data['secondary_key']},severity='CRITICAL')
+    except:
+        logger.info("exception in logMeassage")
 
 class Worker(object):
     def __init__(self, queue='default'):
