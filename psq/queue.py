@@ -110,7 +110,7 @@ class Queue(object):
 
     def dequeue(self, max=1, block=False):
         """Returns tasks to be consumed by a worker."""
-        print('In dequeue................................')
+        logger.info('In dequeue................................')
         if not self.subscription:
             self.subscription = self._get_or_create_subscription()
 
@@ -125,8 +125,8 @@ class Queue(object):
         tasks = []
         
         for ack_id, message in messages:
-            print('messssssssssssssssageeeeeeee------------->')
-            print(message.data)
+            logger.info('messssssssssssssssageeeeeeee------------->')
+            logger.info(message.data)
             tasks.append(message.data)
         self.subscription.acknowledge(ack_ids)
 

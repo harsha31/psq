@@ -60,7 +60,7 @@ class Worker(object):
         try:
             logger.info('In while loooooooppppppp')
             while True:
-                print('listeeeeeeeeeeeeeninnnnnnnnnnnnng')
+                logger.info('listeeeeeeeeeeeeeninnnnnnnnnnnnng')
 
                 tasks = self._safe_dequeue()
                 #print "harshhhhhhhhhhhhhhhhhhhhhhaaaaaaaaaaaaaaaaa"
@@ -70,8 +70,9 @@ class Worker(object):
                     continue
 
                 for task in tasks:
-                    print(task)
+                    logger.info(task)
                     logMessage(task)
+                    logger.info("*******************************************")
                     #print task
                     #print "execute task here" 
                     #logger.info('Received task {}'.format(task.id))
