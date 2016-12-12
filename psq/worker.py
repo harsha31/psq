@@ -35,9 +35,10 @@ def logMessage(message):
         log_name = "my-log"
         logger_new = logging_client.logger("harsha")
         logger_new.log_text("hello world")
+        message1 =  str(message)
         logger_new.log_struct({"barca":"messi"},labels={"harsha":"reddy"},severity='CRITICAL')
     #for message in messages
-        data = json.loads(message)
+        data = json.loads(message1)
         logger_new.log_text("after json dump")
         logger_new.log_struct(data['data'],severity='CRITICAL')
     except:
