@@ -32,18 +32,18 @@ logging_client = logging_new.Client()
 
 def logMessage(message):
     try:
-        log_name = "my-log"
-        logger_new = logging_client.logger("harsha")
-        logger_new.log_text("hello world")
-        logger.info(message)
-        logger.info("bfore------------------------>")
+        log_name = "customLogs"
+        logger_new = logging_client.logger(log_name)
+    
         message1 =  str(message.decode('utf-8'))
-        logger.info(message1)
-        logger_new.log_struct({"barca":"messi"},labels={"harsha":"reddy"},severity='CRITICAL')
-    #for message in messages
         data = json.loads(message1)
-        logger_new.log_text("after json dump")
-        logger_new.log_struct(data['data'],severity='CRITICAL')
+        primary_key = data['primary_key']
+        secondary_key = data['secondary_key']
+        severity = data['severity']
+        labels = {}
+        labels[primary_key] = secondary_key 
+        #logger_new.log_text("after json dump")
+        logger_new.log_struct(data['data'],severity=severity,labels=labels)
     except:
         logger.info("exception in logMeassage")
 
@@ -66,23 +66,21 @@ class Worker(object):
         return inner()
 
     def listen(self):
-        logger.info('I am hereeeeeeeeeeeeeeeeeeeeeeeeeeee.')
+        logger.info('Worker Started')
         try:
-            logger.info('In while loooooooppppppp')
+            
             while True:
-                logger.info('listeeeeeeeeeeeeeninnnnnnnnnnnnng')
+                
 
                 tasks = self._safe_dequeue()
-                #print "harshhhhhhhhhhhhhhhhhhhhhhaaaaaaaaaaaaaaaaa"
-                #logger.info('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbb')
+                
 
                 if not tasks:
                     continue
 
                 for task in tasks:
-                    logger.info(task)
                     logMessage(task)
-                    logger.info("*******************************************")
+                   
                     #print task
                     #print "execute task here" 
                     #logger.info('Received task {}'.format(task.id))
@@ -101,7 +99,7 @@ class Worker(object):
 
 class MultiprocessWorker(Worker):
     def __init__(self, queue, num_workers=None, *args, **kwargs):
-        logger.info('in multi processsssinggggggggggg')
+        
         super(MultiprocessWorker, self).__init__(queue, *args, **kwargs)
 
         if not num_workers:
